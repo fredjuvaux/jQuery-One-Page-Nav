@@ -44,7 +44,9 @@
 			scrollThreshold: 0.5,
 			begin: false,
 			end: false,
-			scrollChange: false
+			change: false,
+			scrollChange: false,
+			offset: 0,
 		},
 
 		init: function() {
@@ -77,6 +79,10 @@
 		adjustNav: function(self, $parent) {
 			self.$elem.find('.' + self.config.currentClass).removeClass(self.config.currentClass);
 			$parent.addClass(self.config.currentClass);
+			// If there is a change callback
+			if(this.config.change) {
+				this.config.change($parent);
+			}
 		},
 
 		bindInterval: function() {
@@ -199,7 +205,7 @@
 		},
 
 		scrollTo: function(target, callback) {
-			var offset = $(target).offset().top;
+			var offset = $(target).offset().top - this.config.offset;
 
 			$('html, body').animate({
 				scrollTop: offset
